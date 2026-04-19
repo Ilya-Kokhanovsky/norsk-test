@@ -1,0 +1,84 @@
+{
+  "header": {
+    "catalog": "Каталог тестов",
+    "language": "Язык",
+    "brand": "Norsk Learning",
+    "backHome": "На главную"
+  },
+  "languages": {
+    "ru": "Русский",
+    "uk": "Украинский",
+    "short": {
+      "ru": "RU",
+      "uk": "UK"
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Norsk Quiz Workspace"
+  },
+  "catalog": {
+    "badge": "Доступные режимы",
+    "title": "Каталог тестов",
+    "description": "На главной странице отображаются только доступные тесты. Выберите карточку, чтобы перейти на отдельную страницу конкретного теста.",
+    "loading": "Загрузка каталога...",
+    "ready": "Выберите тест для запуска",
+    "error": "Не удалось загрузить каталог тестов",
+    "openTest": "Открыть тест",
+    "questionsLoading": "Вопросы загружаются",
+    "questionsCount_one": "{{count}} вопрос",
+    "questionsCount_few": "{{count}} вопроса",
+    "questionsCount_many": "{{count}} вопросов",
+    "questionsCount_other": "{{count}} вопроса"
+  },
+  "quiz": {
+    "startButton": "Начать тест",
+    "finishButton": "Завершить →",
+    "nextButton": "Перейти к следующему",
+    "scoreTotal_one": "{{count}} вопрос",
+    "scoreTotal_few": "{{count}} вопроса",
+    "scoreTotal_many": "{{count}} вопросов",
+    "scoreTotal_other": "{{count}} вопроса",
+    "stats": {
+      "questions": "вопросов",
+      "entities": "единиц",
+      "options": "варианта"
+    },
+    "feedback": {
+      "titleCorrect": "Отлично! Почему этот ответ правильный:",
+      "titleWrong": "Разбор ответа: почему выбранный вариант неверный",
+      "selectedCorrect": "Ваш ответ: верно",
+      "correctOption": "Правильный вариант",
+      "selectedWrong": "Ваш ответ: неверно",
+      "wrongOption": "Неверный вариант"
+    },
+    "streak": "{{count}} подряд верно!"
+  },
+  "result": {
+    "title": "Результат",
+    "subtitle_one": "Отвечено на {{count}} вопрос",
+    "subtitle_few": "Отвечено на {{count}} вопроса",
+    "subtitle_many": "Отвечено на {{count}} вопросов",
+    "subtitle_other": "Отвечено на {{count}} вопроса",
+    "total": "Всего",
+    "correct": "Верно",
+    "wrong": "Ошибок",
+    "accuracy": "Точность",
+    "restart": "Пройти еще раз",
+    "messages": {
+      "perfect": "Идеальный результат! Отличная работа!",
+      "excellent": "Великолепно! Почти идеально.",
+      "good": "Хороший результат! Продолжай в том же духе.",
+      "average": "Неплохо, но есть куда расти.",
+      "empty": "Ты еще не ответил ни на один вопрос.",
+      "retry": "Стоит повторить материал еще раз."
+    }
+  },
+  "common": {
+    "check": "Проверить",
+    "next": "Далее",
+    "tryAgain": "Попробовать снова"
+  },
+  "errors": {
+    "loadConfig": "Не удалось загрузить конфигурацию тестов. Проверьте JSON файлы и перезапустите страницу."
+  }
+}

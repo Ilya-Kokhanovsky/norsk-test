@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Norsk Verb Test · A1 · Reverse</title>
+  <link rel="stylesheet" href="../../styles/min/tailwind.min.css" />
+  <link rel="stylesheet" href="../../styles/min/foundation.min.css" />
+  <link rel="stylesheet" href="../../styles/min/app.min.css" />
+</head>
+<body data-test-id="norsk-verbs-a1-reverse" data-home-url="../../index.html" data-catalog-path="../../data/tests/catalog.json" data-i18n-path="../../locales" class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <div data-component-src="../../components/site-header.html"></div>
+
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-24 -left-20 h-72 w-72 rounded-full bg-teal-200/35 blur-3xl"></div>
+    <div class="absolute top-1/3 -right-24 h-80 w-80 rounded-full bg-orange-200/35 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-sky-200/30 blur-3xl"></div>
+  </div>
+
+  <section id="screen-start" class="screen-shell flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 sm:py-12">
+    <div class="fade-in w-full max-w-md rounded-3xl border border-white/70 bg-white/85 p-5 shadow-xl backdrop-blur sm:p-7">
+      <div class="mb-8 text-center sm:mb-9">
+        <span id="start-subtitle" class="mb-5 inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500">
+          A1 · Reverse
+        </span>
+        <h1 id="start-title" class="mb-2 text-2xl font-bold tracking-tight sm:text-3xl">Norsk Verb Test</h1>
+        <p id="start-description" class="text-sm leading-relaxed text-slate-500">
+          Выберите правильный перевод на русском для норвежского глагола
+        </p>
+      </div>
+
+      <div class="mb-7 grid grid-cols-3 gap-2.5 text-center sm:gap-3">
+        <div class="rounded-2xl border border-slate-100 bg-white py-3.5 sm:py-4">
+          <p id="start-stat-questions" class="text-xl font-semibold">90</p>
+          <p data-i18n="quiz.stats.questions" class="mt-0.5 text-xs text-slate-400">вопросов</p>
+        </div>
+        <div class="rounded-2xl border border-slate-100 bg-white py-3.5 sm:py-4">
+          <p id="start-stat-entities" class="text-xl font-semibold">30</p>
+          <p data-i18n="quiz.stats.entities" class="mt-0.5 text-xs text-slate-400">единиц</p>
+        </div>
+        <div class="rounded-2xl border border-slate-100 bg-white py-3.5 sm:py-4">
+          <p id="start-stat-options" class="text-xl font-semibold">4</p>
+          <p data-i18n="quiz.stats.options" class="mt-0.5 text-xs text-slate-400">варианта</p>
+        </div>
+      </div>
+
+      <button
+        id="btn-start"
+        class="w-full rounded-xl bg-slate-900 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:bg-slate-950"
+      >
+        <span class="inline-flex items-center gap-2">
+          <i data-lucide="play" aria-hidden="true" class="w-4 h-4"></i>
+          <span data-i18n="quiz.startButton">Начать тест</span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <section id="screen-test" class="screen-shell hidden min-h-screen flex-col">
+    <header class="sticky top-0 z-10 border-b border-white/70 bg-white/85 backdrop-blur">
+      <div class="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <div class="flex items-center gap-2">
+          <span id="pill-correct" class="flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600 transition-all">
+            <i data-lucide="circle-check" aria-hidden="true" class="w-3.5 h-3.5"></i>
+            <span id="score-correct">0</span>
+          </span>
+          <span id="pill-wrong" class="flex items-center gap-1.5 rounded-full border border-red-100 bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-500 transition-all">
+            <i data-lucide="circle-x" aria-hidden="true" class="w-3.5 h-3.5"></i>
+            <span id="score-wrong">0</span>
+          </span>
+        </div>
+
+        <span id="score-total" class="select-none text-xs font-medium text-slate-400">0</span>
+
+        <button id="btn-finish" class="whitespace-nowrap text-xs font-medium text-slate-500 transition-colors hover:text-slate-800">
+          <span class="inline-flex items-center gap-1.5">
+            <i data-lucide="flag" aria-hidden="true" class="w-3.5 h-3.5"></i>
+            <span data-i18n="quiz.finishButton">Завершить&nbsp;→</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="h-0.5 w-full bg-slate-100">
+        <div id="progress-line" class="progress-bar h-0.5 bg-emerald-400" style="width:0%"></div>
+      </div>
+    </header>
+
+    <main class="flex flex-1 justify-center px-4 pb-8 pt-6 sm:px-6 sm:pt-8 md:pt-10">
+      <div class="w-full max-w-3xl">
+        <div id="question-wrap" class="fade-in rounded-3xl border border-white/70 bg-white/90 p-5 shadow-lg backdrop-blur sm:p-7 md:p-8">
+          <p id="question-label" class="mb-3 select-none text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+            что это по-русски?
+          </p>
+          <h2 id="question-text" class="mb-8 min-h-[2.5rem] text-2xl font-bold leading-tight sm:text-3xl md:text-[2.1rem]"></h2>
+
+          <div id="options-grid" class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-3.5"></div>
+
+          <div id="answer-feedback" class="mt-5 hidden rounded-2xl border border-slate-200 bg-slate-50/75 p-4 sm:mt-6">
+            <p id="answer-feedback-title" class="text-sm font-semibold text-slate-700"></p>
+            <div id="answer-feedback-list" class="mt-3 grid grid-cols-1 gap-2.5"></div>
+            <button id="btn-next-question" class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:bg-slate-950 sm:w-auto">
+              <i data-lucide="arrow-right" aria-hidden="true" class="h-4 w-4"></i>
+              <span data-i18n="quiz.nextButton">Перейти к следующему</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="streak-badge" class="fade-in mt-5 hidden text-center text-sm font-semibold text-amber-500 sm:mt-6"></div>
+      </div>
+    </main>
+  </section>
+
+  <section id="screen-result" class="screen-shell hidden min-h-screen items-center justify-center px-4 py-10 sm:px-6 sm:py-12">
+    <div class="fade-in w-full max-w-md rounded-3xl border border-white/70 bg-white/90 p-5 shadow-xl backdrop-blur sm:p-7">
+      <div class="mb-7 text-center sm:mb-8">
+        <div id="result-icon-wrap" class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+          <i id="result-icon" data-lucide="trophy" aria-hidden="true" class="h-8 w-8"></i>
+        </div>
+        <h2 data-i18n="result.title" class="mb-1 text-2xl font-bold">Результат</h2>
+        <p id="result-subtitle" class="text-sm text-slate-500"></p>
+      </div>
+
+      <div class="mb-6 grid grid-cols-3 gap-2.5 sm:gap-3">
+        <div class="rounded-2xl border border-slate-100 bg-white p-3.5 text-center sm:p-4">
+          <p id="result-total" class="text-2xl font-bold">0</p>
+          <p data-i18n="result.total" class="mt-1 text-xs text-slate-400">Всего</p>
+        </div>
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-3.5 text-center sm:p-4">
+          <p id="result-correct" class="text-2xl font-bold text-emerald-600">0</p>
+          <p data-i18n="result.correct" class="mt-1 text-xs text-emerald-500">Верно</p>
+        </div>
+        <div class="rounded-2xl border border-red-100 bg-red-50 p-3.5 text-center sm:p-4">
+          <p id="result-wrong" class="text-2xl font-bold text-red-500">0</p>
+          <p data-i18n="result.wrong" class="mt-1 text-xs text-red-400">Ошибок</p>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <div class="mb-1.5 flex justify-between text-xs text-slate-400">
+          <span data-i18n="result.accuracy">Точность</span>
+          <span id="result-pct-label">0%</span>
+        </div>
+        <div class="h-2 w-full rounded-full bg-slate-100">
+          <div id="result-bar" class="progress-bar h-2 rounded-full" style="width:0%"></div>
+        </div>
+      </div>
+      <p id="result-msg" class="mb-8 mt-4 text-center text-xs text-slate-500"></p>
+
+      <div class="flex flex-col gap-3">
+        <button id="btn-restart" class="w-full rounded-xl bg-slate-900 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:bg-slate-950">
+          <span class="inline-flex items-center gap-2">
+            <i data-lucide="rotate-ccw" aria-hidden="true" class="w-4 h-4"></i>
+            <span data-i18n="result.restart">Пройти ещё раз</span>
+          </span>
+        </button>
+        <button id="btn-home" class="w-full rounded-xl py-3 text-sm font-medium text-slate-500 transition-colors hover:text-slate-800">
+          <span class="inline-flex items-center gap-2">
+            <i data-lucide="house" aria-hidden="true" class="w-4 h-4"></i>
+            <span data-i18n="header.backHome">На главную</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div data-component-src="../../components/site-footer.html"></div>
+
+  <script defer src="../../scripts/min/components-loader.min.js"></script>
+  <script defer src="../../scripts/min/main.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+:root {
+  --surface: rgba(255, 255, 255, 0.9);
+  --stroke: rgba(148, 163, 184, 0.2);
+  --shadow: 0 18px 42px rgba(15, 23, 42, 0.1);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.screen-shell {
+  width: 100%;
+}
+
+.fade-in {
+  animation: fadeUp 0.22s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-option {
+  border: 1px solid var(--stroke);
+  background: var(--surface);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+  transition: background 0.16s, border-color 0.16s, color 0.16s, transform 0.14s, box-shadow 0.14s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.btn-option:active:not(:disabled) {
+  transform: translateY(0) scale(0.99);
+}
+
+.btn-option:focus-visible {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+.progress-bar {
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+@media (min-width: 640px) {
+  .btn-option {
+    min-height: 58px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .btn-option {
+    min-height: 62px;
+  }
+}

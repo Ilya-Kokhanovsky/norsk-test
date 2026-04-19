@@ -1,0 +1,25 @@
+{
+  "name": "norsk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist scripts/min styles/min",
+    "build:tailwind": "node -e \"require('node:fs').mkdirSync('styles/min', { recursive: true })\" && tailwindcss -c ./tailwind.config.cjs -i ./styles/src/tailwind.css -o ./styles/min/tailwind.min.css --minify",
+    "build": "npm run clean && npm run build:tailwind && node ./tools/build.mjs"
+  },
+  "devDependencies": {
+    "animejs": "^4.3.6",
+    "confetti-js": "^0.0.18",
+    "esbuild": "^0.25.11",
+    "lucide": "^1.8.0",
+    "rimraf": "^5.0.10",
+    "sortablejs": "^1.15.7",
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "i18next": "^23.12.2",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "i18next-http-backend": "^3.0.2"
+  }
+}

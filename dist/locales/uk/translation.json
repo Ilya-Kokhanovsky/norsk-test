@@ -1,0 +1,84 @@
+{
+  "header": {
+    "catalog": "Каталог тестів",
+    "language": "Мова",
+    "brand": "Norsk Learning",
+    "backHome": "На головну"
+  },
+  "languages": {
+    "ru": "Російська",
+    "uk": "Українська",
+    "short": {
+      "ru": "RU",
+      "uk": "UK"
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Norsk Quiz Workspace"
+  },
+  "catalog": {
+    "badge": "Доступні режими",
+    "title": "Каталог тестів",
+    "description": "На головній сторінці відображаються лише доступні тести. Оберіть картку, щоб перейти на окрему сторінку конкретного тесту.",
+    "loading": "Завантаження каталогу...",
+    "ready": "Оберіть тест для запуску",
+    "error": "Не вдалося завантажити каталог тестів",
+    "openTest": "Відкрити тест",
+    "questionsLoading": "Питання завантажуються",
+    "questionsCount_one": "{{count}} питання",
+    "questionsCount_few": "{{count}} питання",
+    "questionsCount_many": "{{count}} питань",
+    "questionsCount_other": "{{count}} питання"
+  },
+  "quiz": {
+    "startButton": "Почати тест",
+    "finishButton": "Завершити →",
+    "nextButton": "Перейти до наступного",
+    "scoreTotal_one": "{{count}} питання",
+    "scoreTotal_few": "{{count}} питання",
+    "scoreTotal_many": "{{count}} питань",
+    "scoreTotal_other": "{{count}} питання",
+    "stats": {
+      "questions": "питань",
+      "entities": "одиниць",
+      "options": "варіанти"
+    },
+    "feedback": {
+      "titleCorrect": "Чудово! Чому ця відповідь правильна:",
+      "titleWrong": "Розбір відповіді: чому вибраний варіант неправильний",
+      "selectedCorrect": "Ваша відповідь: правильно",
+      "correctOption": "Правильний варіант",
+      "selectedWrong": "Ваша відповідь: неправильно",
+      "wrongOption": "Неправильний варіант"
+    },
+    "streak": "{{count}} поспіль правильно!"
+  },
+  "result": {
+    "title": "Результат",
+    "subtitle_one": "Відповіді на {{count}} питання",
+    "subtitle_few": "Відповіді на {{count}} питання",
+    "subtitle_many": "Відповіді на {{count}} питань",
+    "subtitle_other": "Відповіді на {{count}} питання",
+    "total": "Усього",
+    "correct": "Правильно",
+    "wrong": "Помилок",
+    "accuracy": "Точність",
+    "restart": "Спробувати ще раз",
+    "messages": {
+      "perfect": "Ідеальний результат! Чудова робота!",
+      "excellent": "Відмінно! Майже ідеально.",
+      "good": "Гарний результат! Продовжуйте в тому ж дусі.",
+      "average": "Непогано, але є куди рости.",
+      "empty": "Ви ще не відповіли на жодне питання.",
+      "retry": "Варто повторити матеріал ще раз."
+    }
+  },
+  "common": {
+    "check": "Перевірити",
+    "next": "Далі",
+    "tryAgain": "Спробувати ще раз"
+  },
+  "errors": {
+    "loadConfig": "Не вдалося завантажити конфігурацію тестів. Перевірте JSON-файли та перезапустіть сторінку."
+  }
+}

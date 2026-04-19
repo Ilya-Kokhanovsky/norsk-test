@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Components Starter</title>
+  <link rel="stylesheet" href="../../styles/min/tailwind.min.css" />
+  <link rel="stylesheet" href="../../styles/min/foundation.min.css" />
+  <link rel="stylesheet" href="../../styles/min/app.min.css" />
+  <link rel="stylesheet" href="../../styles/min/test-components.min.css" />
+</head>
+<body data-home-url="../../index.html" data-i18n-path="../../locales" class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <div data-component-src="../../components/site-header.html"></div>
+
+  <main class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+    <section class="mb-6 rounded-3xl border border-white/70 bg-white/90 p-5 shadow-lg backdrop-blur sm:p-7">
+      <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">Future Test Components</h1>
+      <p class="mt-2 text-sm leading-relaxed text-slate-500">
+        This starter page shows reusable mechanics for future tests.
+      </p>
+    </section>
+
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <section class="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-md sm:p-5">
+        <h2 class="mb-3 text-base font-semibold">1. Sentence Builder</h2>
+        <div id="demo-sentence-builder"></div>
+      </section>
+
+      <section class="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-md sm:p-5">
+        <h2 class="mb-3 text-base font-semibold">2. Bucket Sort</h2>
+        <div id="demo-bucket-sort"></div>
+      </section>
+
+      <section class="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-md sm:p-5">
+        <h2 class="mb-3 text-base font-semibold">3. Binary Choice</h2>
+        <div id="demo-binary"></div>
+      </section>
+
+      <section class="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-md sm:p-5">
+        <h2 class="mb-3 text-base font-semibold">4. Cloze Choice</h2>
+        <div id="demo-cloze"></div>
+      </section>
+
+      <section class="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-md sm:p-5">
+        <h2 class="mb-3 text-base font-semibold">5. Matching Tiles</h2>
+        <div id="demo-matching"></div>
+      </section>
+
+      <section class="rounded-2xl border border-white/70 bg-white/90 p-4 shadow-md sm:p-5">
+        <h2 class="mb-3 text-base font-semibold">Bonus: Odd One Out</h2>
+        <div id="demo-odd"></div>
+      </section>
+    </div>
+  </main>
+
+  <div data-component-src="../../components/site-footer.html"></div>
+
+  <script defer src="../../scripts/min/components-loader.min.js"></script>
+  <script defer src="../../scripts/min/test-components.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const api = window.NorskTestComponents;
+      if (!api) {
+        return;
+      }
+
+      const feedback = api.createFeedbackKit();
+
+      api.createSentenceBuilder(document.getElementById("demo-sentence-builder"), {
+        prompt: "Build a Norwegian sentence:",
+        wordBank: ["Jeg", "ikke", "snakker", "norsk"],
+        correctSequence: ["Jeg", "snakker", "ikke", "norsk"],
+        v2Verb: "snakker",
+        onCheck: (result) => {
+          if (result.isCorrect) {
+            feedback.playCorrect();
+          } else {
+            feedback.playWrong();
+          }
+        }
+      });
+
+      api.createBucketSort(document.getElementById("demo-bucket-sort"), {
+        prompt: "Drag nouns to the correct article bucket:",
+        buckets: [
+          { id: "en", label: "En" },
+          { id: "ei", label: "Ei" },
+          { id: "et", label: "Et" }
+        ],
+        cards: [
+          { id: "1", label: "bil", bucketId: "en" },
+          { id: "2", label: "bok", bucketId: "ei" },
+          { id: "3", label: "hus", bucketId: "et" }
+        ],
+        onCheck: (result) => {
+          if (result.isCorrect) {
+            feedback.playCorrect();
+          } else {
+            feedback.playWrong();
+          }
+        }
+      });
+
+      api.createBinaryChoice(document.getElementById("demo-binary"), {
+        item: {
+          statement: "Han vasker ham (meaning: he washes himself).",
+          isCorrect: false,
+          explanationIfWrong: "Use seg for reflexive meaning in Norwegian.",
+          explanationIfRight: "Sentence is acceptable in this context."
+        },
+        onAnswer: (result) => {
+          if (result.isCorrect) {
+            feedback.playCorrect();
+          } else {
+            feedback.playWrong();
+          }
+        }
+      });
+
+      api.createClozeChoice(document.getElementById("demo-cloze"), {
+        item: {
+          template: "Et ___ hus",
+          options: ["stort", "stor", "store"],
+          answer: "stort",
+          explanation: "Neuter noun hus requires stort in singular indefinite form."
+        },
+        onAnswer: (result) => {
+          if (result.isCorrect) {
+            feedback.playCorrect();
+          } else {
+            feedback.playWrong();
+          }
+        }
+      });
+
+      api.createMatchingTiles(document.getElementById("demo-matching"), {
+        pairs: [
+          { id: "p1", left: "a ga", right: "gikk" },
+          { id: "p2", left: "a vare", right: "var" },
+          { id: "p3", left: "a se", right: "sa" }
+        ],
+        onComplete: () => {
+          feedback.celebratePerfectRun();
+        }
+      });
+
+      api.createOddOneOutChoice(document.getElementById("demo-odd"), {
+        item: {
+          prompt: "Pick the odd one out:",
+          options: ["snakker", "loper", "spiser", "barn"],
+          answer: "barn",
+          explanation: "barn is a noun while others are verbs."
+        },
+        onAnswer: (result) => {
+          if (result.isCorrect) {
+            feedback.playCorrect();
+          } else {
+            feedback.playWrong();
+          }
+        }
+      });
+
+      window.addEventListener("beforeunload", () => {
+        feedback.destroy();
+      });
+    });
+  </script>
+</body>
+</html>

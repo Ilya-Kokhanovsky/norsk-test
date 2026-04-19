@@ -1,0 +1,45 @@
+{
+  "defaultTestId": "norsk-verbs-a1-direct",
+  "tests": [
+    {
+      "id": "norsk-verbs-a1-direct",
+      "mode": "multiple-choice",
+      "title": "Norsk Verb Test",
+      "subtitle": "A1 · Kapittel 1-6",
+      "description": "Выберите правильный норвежский глагол по его значению на русском",
+      "pagePath": "tests/norsk-verbs-a1-direct/index.html",
+      "datasetPath": "./norsk-verbs-a1.json",
+      "promptField": "question",
+      "answerField": "answer",
+      "choicesField": "options",
+      "optionSourceField": "answer",
+      "optionCount": 4,
+      "recentWindow": 10,
+      "questionLabel": "как это по-норвежски?",
+      "autoNext": {
+        "correctMs": 900,
+        "wrongMs": 1400
+      }
+    },
+    {
+      "id": "norsk-verbs-a1-reverse",
+      "mode": "multiple-choice",
+      "title": "Norsk Verb Test",
+      "subtitle": "A1 · Reverse",
+      "description": "Выберите правильный перевод на русском для норвежского глагола",
+      "pagePath": "tests/norsk-verbs-a1-reverse/index.html",
+      "datasetPath": "./norsk-verbs-a1.json",
+      "promptField": "answer",
+      "answerField": "question",
+      "choicesField": null,
+      "optionSourceField": "question",
+      "optionCount": 4,
+      "recentWindow": 10,
+      "questionLabel": "что это по-русски?",
+      "autoNext": {
+        "correctMs": 900,
+        "wrongMs": 1400
+      }
+    }
+  ]
+}

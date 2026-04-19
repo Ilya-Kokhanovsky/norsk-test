@@ -1,0 +1,46 @@
+<header class="sticky top-0 z-20 border-b border-white/70 bg-white/85 backdrop-blur">
+  <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+    <a data-component-home-link class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900" href="index.html">
+      <i data-lucide="book-open" aria-hidden="true" class="h-4 w-4"></i>
+      <span data-i18n="header.catalog">Каталог тестов</span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <span data-i18n="header.brand" class="hidden text-xs font-medium text-slate-400 sm:inline">Norsk Learning</span>
+
+      <div data-lang-switcher class="relative">
+        <button
+          type="button"
+          data-lang-toggle
+          aria-expanded="false"
+          class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/95 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-white hover:text-slate-900"
+        >
+          <i data-lucide="languages" aria-hidden="true" class="h-3.5 w-3.5"></i>
+          <span data-i18n="header.language" class="hidden sm:inline">Язык</span>
+          <span data-lang-current class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold leading-none text-slate-700">RU</span>
+          <i data-lucide="chevron-down" aria-hidden="true" class="h-3.5 w-3.5"></i>
+        </button>
+
+        <div data-lang-menu class="absolute right-0 z-30 mt-2 hidden min-w-40 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm">
+          <button
+            type="button"
+            data-lang-option="ru"
+            class="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium text-slate-700 transition-all hover:bg-slate-100 hover:text-slate-900"
+          >
+            <span data-i18n="languages.ru">Русский</span>
+            <span class="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold">RU</span>
+          </button>
+
+          <button
+            type="button"
+            data-lang-option="uk"
+            class="mt-1 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium text-slate-700 transition-all hover:bg-slate-100 hover:text-slate-900"
+          >
+            <span data-i18n="languages.uk">Українська</span>
+            <span class="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold">UK</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
