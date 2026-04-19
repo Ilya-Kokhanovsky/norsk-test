@@ -4,9 +4,40 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 const SUPPORTED_LANGUAGES = ["ru", "uk"];
 const FALLBACK_LANGUAGE = "ru";
+const LANGUAGE_STORAGE_KEY = "norskLanguage";
 
 let initPromise = null;
 const languageChangeSubscribers = new Set();
+
+function getLocalStorage() {
+  try {
+    if (typeof window === "undefined" || !window.localStorage) {
+      return null;
+    }
+
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+function persistLanguage(language) {
+  const storage = getLocalStorage();
+  if (!storage) {
+    return;
+  }
+
+  const normalizedLanguage = String(language || "").toLowerCase();
+  if (!SUPPORTED_LANGUAGES.includes(normalizedLanguage)) {
+    return;
+  }
+
+  try {
+    storage.setItem(LANGUAGE_STORAGE_KEY, normalizedLanguage);
+  } catch {
+    // Ignore storage errors to keep i18n flow stable.
+  }
+}
 
 function normalizeBasePath(rawPath) {
   if (typeof rawPath !== "string" || !rawPath.trim()) {
@@ -181,6 +212,7 @@ export async function changeLanguage(language) {
   }
 
   await i18next.changeLanguage(normalizedLanguage);
+  persistLanguage(normalizedLanguage);
   return getCurrentLanguage();
 }
 
@@ -232,18 +264,22 @@ export async function initI18n() {
       detection: {
         order: ["querystring", "localStorage", "navigator", "htmlTag"],
         lookupQuerystring: "lng",
+        lookupLocalStorage: LANGUAGE_STORAGE_KEY,
         caches: ["localStorage"],
         checkWhitelist: true
       }
     })
     .then(() => {
-      document.documentElement.lang = getCurrentLanguage();
+      const initialLanguage = getCurrentLanguage();
+      document.documentElement.lang = initialLanguage;
+      persistLanguage(initialLanguage);
       bindLanguageSwitchers(document);
       applyTranslations(document);
 
       i18next.on("languageChanged", () => {
         const activeLanguage = getCurrentLanguage();
         document.documentElement.lang = activeLanguage;
+        persistLanguage(activeLanguage);
         applyTranslations(document);
         bindLanguageSwitchers(document);
         notifyLanguageSubscribers(activeLanguage);
