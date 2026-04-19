@@ -12,6 +12,12 @@ body {
   width: 100%;
 }
 
+.quiz-copy {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
 .fade-in {
   animation: fadeUp 0.22s ease both;
 }
@@ -31,9 +37,13 @@ body {
 .btn-option {
   border: 1px solid var(--stroke);
   background: var(--surface);
+  min-height: 44px;
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
   transition: background 0.16s, border-color 0.16s, color 0.16s, transform 0.14s, box-shadow 0.14s;
   -webkit-tap-highlight-color: transparent;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .btn-option:hover:not(:disabled) {

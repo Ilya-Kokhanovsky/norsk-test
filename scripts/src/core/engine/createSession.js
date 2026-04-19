@@ -3,19 +3,46 @@ import { assertValidDataset } from "../../foundation/testValidators.js";
 import { createScoreTracker } from "./createScoreTracker.js";
 import { createQuestionStrategyFactory } from "./strategyFactory.js";
 
-function pickNextItem(items, recentIds, recentWindow, pickItemFn) {
-  const safeWindow = Number.isInteger(recentWindow) && recentWindow > 0 ? recentWindow : 0;
-  const recentSet = safeWindow > 0 ? new Set(recentIds) : null;
-
-  let pool = safeWindow > 0
-    ? items.filter((item) => !recentSet.has(item.id))
-    : items;
-
-  if (!pool.length) {
-    pool = items;
+function getErrorMessage(error) {
+  if (error instanceof Error && error.message) {
+    return error.message;
   }
 
-  const selected = pickItemFn(pool);
+  if (typeof error === "string") {
+    return error;
+  }
+
+  return "Unknown error";
+}
+
+function pickNextItem(items, recentIds, recentWindow, pickItemFn) {
+  const safeWindow = Number.isInteger(recentWindow) && recentWindow > 0 ? recentWindow : 0;
+  let selected = null;
+
+  if (safeWindow > 0) {
+    const recentSet = new Set(recentIds);
+    const attemptLimit = Math.max(6, Math.min(items.length * 2, 20));
+
+    for (let attempt = 0; attempt < attemptLimit; attempt += 1) {
+      const candidate = pickItemFn(items);
+      if (!candidate) {
+        break;
+      }
+
+      if (!recentSet.has(candidate.id) || recentSet.size >= items.length) {
+        selected = candidate;
+        break;
+      }
+    }
+
+    if (!selected) {
+      const pool = items.filter((item) => !recentSet.has(item.id));
+      selected = pickItemFn(pool.length ? pool : items);
+    }
+  } else {
+    selected = pickItemFn(items);
+  }
+
   if (!selected) {
     throw new Error("Question pool is empty");
   }
@@ -68,7 +95,9 @@ export function createSession(config, dataset, dependencies = {}) {
       items
     });
   } catch (error) {
-    throw new Error(`Unable to initialize strategy for mode ${config.mode}: ${error.message}`);
+    throw new Error(`Unable to initialize strategy for mode ${config.mode}: ${getErrorMessage(error)}`, {
+      cause: error
+    });
   }
 
   const scoreTracker = createScoreTracker();
@@ -94,7 +123,9 @@ export function createSession(config, dataset, dependencies = {}) {
     try {
       state.currentQuestion = strategy.createQuestion(item);
     } catch (error) {
-      throw new Error(`Failed to build question from item ${item?.id ?? "unknown"}: ${error.message}`);
+      throw new Error(`Failed to build question from item ${item?.id ?? "unknown"}: ${getErrorMessage(error)}`, {
+        cause: error
+      });
     }
 
     return {
@@ -113,7 +144,9 @@ export function createSession(config, dataset, dependencies = {}) {
     try {
       result = strategy.evaluateAnswer(state.currentQuestion, selected);
     } catch (error) {
-      throw new Error(`Failed to evaluate submitted answer: ${error.message}`);
+      throw new Error(`Failed to evaluate submitted answer: ${getErrorMessage(error)}`, {
+        cause: error
+      });
     }
     if (!result) {
       return null;

@@ -16,30 +16,39 @@
   border-radius: 1.25rem;
   background: color-mix(in srgb, var(--tc-bg) 86%, transparent);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-  padding: 1rem;
+  padding: 0.9rem;
 }
 
 .tc-prompt {
   margin-bottom: 0.75rem;
-  font-size: 0.95rem;
+  font-size: clamp(0.92rem, 2.6vw, 1rem);
   font-weight: 700;
   color: var(--tc-text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-subtitle {
   margin-bottom: 0.45rem;
-  font-size: 0.78rem;
+  font-size: clamp(0.74rem, 2.2vw, 0.82rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--tc-muted);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-help {
   margin-top: 0.4rem;
-  font-size: 0.76rem;
+  font-size: clamp(0.74rem, 2.1vw, 0.8rem);
   line-height: 1.4;
   color: var(--tc-muted);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-dropzone {
@@ -47,10 +56,13 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   min-height: 3.15rem;
+  max-width: 100%;
   border-radius: 0.9rem;
   border: 1px dashed var(--tc-border);
   background: var(--tc-bg-soft);
   padding: 0.7rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tc-answer-zone {
@@ -71,15 +83,23 @@
   border: 1px solid var(--tc-border);
   background: var(--tc-bg);
   color: var(--tc-text);
+  min-height: 2.75rem;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
   transition: all 0.18s ease;
   -webkit-tap-highlight-color: transparent;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-token,
 .tc-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
   padding: 0.55rem 0.8rem;
-  font-size: 0.86rem;
+  font-size: clamp(0.82rem, 2.2vw, 0.9rem);
   font-weight: 600;
 }
 
@@ -166,8 +186,11 @@
 .tc-feedback {
   min-height: 1.3rem;
   margin-top: 0.65rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.78rem, 2.1vw, 0.84rem);
   font-weight: 600;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-feedback-neutral {
@@ -202,8 +225,11 @@
 
 .tc-sentence {
   margin-bottom: 0.85rem;
-  font-size: 1rem;
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-blank {
@@ -224,11 +250,13 @@
 }
 
 .tc-option-card {
+  display: flex;
+  align-items: center;
   width: 100%;
   cursor: pointer;
   text-align: left;
-  padding: 0.72rem 0.85rem;
-  font-size: 0.87rem;
+  padding: 0.72rem 0.8rem;
+  font-size: clamp(0.84rem, 2.2vw, 0.9rem);
   font-weight: 600;
 }
 
@@ -238,15 +266,21 @@
   background: var(--tc-bg-soft);
   padding: 0.82rem;
   margin-bottom: 0.75rem;
-  font-size: 0.95rem;
+  font-size: clamp(0.9rem, 2.4vw, 0.98rem);
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tc-choice-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
-  min-width: 8.6rem;
+  min-width: 2.75rem;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: clamp(0.88rem, 2.4vw, 0.98rem);
   font-weight: 700;
   padding: 0.78rem 0.8rem;
   cursor: pointer;
@@ -264,10 +298,12 @@
 }
 
 .tc-match-tile {
+  display: flex;
+  align-items: center;
   width: 100%;
   text-align: left;
   cursor: pointer;
-  font-size: 0.86rem;
+  font-size: clamp(0.82rem, 2.2vw, 0.9rem);
   font-weight: 700;
   padding: 0.65rem 0.78rem;
 }

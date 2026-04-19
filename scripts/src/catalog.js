@@ -32,7 +32,7 @@ function buildStatPill(questionCount) {
     });
 
   const pill = createNode(document, "span", {
-    className: "inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-500"
+    className: "inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-500"
   });
 
   const icon = createNode(document, "i", {
@@ -44,6 +44,7 @@ function buildStatPill(questionCount) {
   });
 
   const text = createNode(document, "span", {
+    className: "min-w-0 break-words hyphens-auto",
     text: statLabel
   });
 
@@ -55,27 +56,27 @@ function buildStatPill(questionCount) {
 
 function createTestCard(testConfig, questionCount) {
   const article = createNode(document, "article", {
-    className: "rounded-3xl border border-white/70 bg-white/90 p-5 shadow-lg backdrop-blur sm:p-6"
+    className: "rounded-3xl border border-white/70 bg-white/90 p-4 shadow-lg backdrop-blur sm:p-6"
   });
 
   const title = createNode(document, "h2", {
-    className: "text-xl font-bold text-slate-900",
+    className: "quiz-copy text-lg font-bold text-slate-900 sm:text-xl",
     text: `${testConfig.title} · ${testConfig.subtitle}`
   });
 
   const description = createNode(document, "p", {
-    className: "mt-2 text-sm leading-relaxed text-slate-500",
+    className: "quiz-copy mt-2 text-sm leading-relaxed text-slate-500",
     text: testConfig.description
   });
 
   const controls = createNode(document, "div", {
-    className: "mt-5 flex flex-wrap items-center justify-between gap-3"
+    className: "mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
   });
 
   const stat = buildStatPill(questionCount);
 
   const action = createNode(document, "a", {
-    className: "inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:bg-slate-950",
+    className: "inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 active:bg-slate-950 sm:w-auto",
     attrs: {
       href: resolveTestPagePath(testConfig)
     }

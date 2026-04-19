@@ -4,6 +4,7 @@ import {
   normalizeNorwegianText,
   uniqueNorwegianValues
 } from "../../lang/norwegianText.js";
+import { createOptionExplanationResolver } from "../optionExplanationResolver.js";
 
 function collectUniqueFieldValues(items, fieldName) {
   const values = [];
@@ -15,9 +16,7 @@ function collectUniqueFieldValues(items, fieldName) {
     }
   }
 
-  return uniqueNorwegianValues(values, {
-    lowerCase: false
-  });
+  return uniqueNorwegianValues(values);
 }
 
 function hasAnswerValue(values, answer) {
@@ -25,9 +24,7 @@ function hasAnswerValue(values, answer) {
 }
 
 function normalizeChoiceValues(rawChoices, answer, optionCount) {
-  const deduped = uniqueNorwegianValues(rawChoices, {
-    lowerCase: false
-  });
+  const deduped = uniqueNorwegianValues(rawChoices);
 
   if (!hasAnswerValue(deduped, answer)) {
     deduped.push(answer);
@@ -44,40 +41,6 @@ function normalizeChoiceValues(rawChoices, answer, optionCount) {
 
   const withoutAnswer = deduped.filter((value) => !areNorwegianTextEqual(value, answer));
   return [answer, ...withoutAnswer.slice(0, Math.max(0, optionCount - 1))];
-}
-
-function buildExplanationResolver(item) {
-  const map = item?.optionExplanations;
-
-  if (!map || typeof map !== "object" || Array.isArray(map)) {
-    return () => null;
-  }
-
-  const normalizedLookup = new Map();
-
-  for (const [key, value] of Object.entries(map)) {
-    if (typeof value !== "string" || !value.trim()) {
-      continue;
-    }
-
-    const normalizedKey = normalizeNorwegianText(key, {
-      lowerCase: true
-    });
-
-    normalizedLookup.set(normalizedKey, value.trim());
-  }
-
-  return (optionValue) => {
-    if (typeof map?.[optionValue] === "string" && map[optionValue].trim()) {
-      return map[optionValue].trim();
-    }
-
-    const normalizedOption = normalizeNorwegianText(optionValue, {
-      lowerCase: true
-    });
-
-    return normalizedLookup.get(normalizedOption) || null;
-  };
 }
 
 function createOptionEntry(optionValue, prompt, answer, resolveExplanation) {
@@ -106,10 +69,18 @@ function createOptionEntry(optionValue, prompt, answer, resolveExplanation) {
   };
 }
 
-function buildOptions(item, items, config, prompt, answer) {
+function buildOptions(item, context, prompt, answer) {
+  const {
+    config,
+    optionCount,
+    optionSourcePool,
+    fallbackAnswerPool
+  } = context;
+
   const sourceChoices = config.choicesField ? item?.[config.choicesField] : null;
-  const optionCount = Number.isInteger(config.optionCount) ? config.optionCount : 4;
-  const resolveExplanation = buildExplanationResolver(item);
+  const resolveExplanation = createOptionExplanationResolver(item?.optionExplanations, {
+    fallback: null
+  });
 
   if (Array.isArray(sourceChoices) && sourceChoices.length >= 2) {
     const normalizedChoices = normalizeChoiceValues(sourceChoices, answer, optionCount);
@@ -118,14 +89,14 @@ function buildOptions(item, items, config, prompt, answer) {
     return shuffledChoices.map((value) => createOptionEntry(value, prompt, answer, resolveExplanation));
   }
 
-  const optionPool = collectUniqueFieldValues(items, config.optionSourceField)
+  const optionPool = optionSourcePool
     .filter((value) => !areNorwegianTextEqual(value, answer));
 
   const distractors = sampleWithoutReplacement(optionPool, optionCount - 1);
   let options = [answer, ...distractors];
 
   if (options.length < optionCount) {
-    const fallbackPool = collectUniqueFieldValues(items, config.answerField)
+    const fallbackPool = fallbackAnswerPool
       .filter((value) => !options.some((option) => areNorwegianTextEqual(option, value)));
 
     options = [...options, ...sampleWithoutReplacement(fallbackPool, optionCount - options.length)];
@@ -158,6 +129,12 @@ function toSelectedValue(selected) {
 
 export function createMultipleChoiceStrategy(context) {
   const { config, items } = context;
+  const optionCount = Number.isInteger(config.optionCount) ? config.optionCount : 4;
+  const optionSourceField = config.optionSourceField || config.answerField;
+  const optionSourcePool = collectUniqueFieldValues(items, optionSourceField);
+  const fallbackAnswerPool = optionSourceField === config.answerField
+    ? optionSourcePool
+    : collectUniqueFieldValues(items, config.answerField);
 
   function createQuestion(item) {
     const prompt = normalizeNorwegianText(item?.[config.promptField], {
@@ -180,7 +157,12 @@ export function createMultipleChoiceStrategy(context) {
       id: item?.id,
       prompt,
       answer,
-      options: buildOptions(item, items, config, prompt, answer)
+      options: buildOptions(item, {
+        config,
+        optionCount,
+        optionSourcePool,
+        fallbackAnswerPool
+      }, prompt, answer)
     };
   }
 
@@ -208,12 +190,12 @@ export function createMultipleChoiceStrategy(context) {
   }
 
   function getMeta() {
-    const uniqueAnswers = collectUniqueFieldValues(items, config.answerField);
+    const uniqueAnswers = fallbackAnswerPool;
 
     return {
       questionCount: items.length,
       entityCount: uniqueAnswers.length,
-      optionCount: config.optionCount
+      optionCount
     };
   }
 

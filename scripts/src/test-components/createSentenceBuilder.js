@@ -9,10 +9,10 @@ import {
   updateFeedback
 } from "./utils.js";
 import {
-  areNorwegianWordArraysEqual,
-  findNorwegianTokenIndex,
-  normalizeNorwegianText
-} from "../core/lang/norwegianText.js";
+  createSentenceOrderValidator,
+  createV2PositionValidator as createCoreV2PositionValidator,
+  normalizeSentenceValidationResult
+} from "../core/engine/validators/sentenceValidation.js";
 
 const DEFAULT_LABELS = {
   prompt: "Build the correct sentence",
@@ -27,94 +27,25 @@ const DEFAULT_LABELS = {
   v2MissingVerb: "Finite verb is missing in your sentence."
 };
 
-function normalizeValidation(result, fallbackMessage) {
-  if (!result || typeof result !== "object") {
-    return {
-      isCorrect: false,
-      message: fallbackMessage,
-      issues: []
-    };
-  }
-
-  return {
-    isCorrect: Boolean(result.isCorrect),
-    message: result.message ? String(result.message) : fallbackMessage,
-    issues: Array.isArray(result.issues) ? result.issues : []
-  };
-}
-
 function createDefaultValidator(expectedWords, labels, config) {
-  return (answerWords) => {
-    const exactMatch = areNorwegianWordArraysEqual(answerWords, expectedWords);
-    const issues = [];
-
-    if (config.v2Verb) {
-      const index = findNorwegianTokenIndex(answerWords, config.v2Verb);
-
-      if (index < 0) {
-        issues.push({
-          type: "v2-missing",
-          tokenIndex: null,
-          message: labels.v2MissingVerb
-        });
-      } else if (index !== 1) {
-        issues.push({
-          type: "v2",
-          tokenIndex: index,
-          message: labels.v2Hint
-        });
-      }
+  return createSentenceOrderValidator(expectedWords, {
+    labels,
+    finiteVerb: config.v2Verb,
+    expectedVerbIndex: Number.isInteger(config.v2VerbIndex) ? config.v2VerbIndex : 1,
+    tokenSearchOptions: {
+      stripEdgePunctuation: true
     }
-
-    return {
-      isCorrect: exactMatch,
-      message: exactMatch ? labels.success : labels.fail,
-      issues
-    };
-  };
+  });
 }
 
 export function createV2PositionValidator(verb, options = {}) {
-  const expectedIndex = Number.isInteger(options.expectedIndex) ? options.expectedIndex : 1;
-  const normalizedVerb = normalizeNorwegianText(verb, {
-    lowerCase: false
+  return createCoreV2PositionValidator(verb, {
+    ...options,
+    tokenSearchOptions: {
+      stripEdgePunctuation: true,
+      ...(options.tokenSearchOptions || {})
+    }
   });
-
-  return (answerWords) => {
-    const tokenIndex = findNorwegianTokenIndex(answerWords, normalizedVerb);
-
-    if (tokenIndex < 0) {
-      return {
-        isCorrect: false,
-        message: `Verb \"${normalizedVerb}\" is missing in the sentence`,
-        issues: [
-          {
-            type: "v2-missing",
-            tokenIndex: null
-          }
-        ]
-      };
-    }
-
-    if (tokenIndex !== expectedIndex) {
-      return {
-        isCorrect: false,
-        message: `Verb \"${normalizedVerb}\" should be at position ${expectedIndex + 1}`,
-        issues: [
-          {
-            type: "v2",
-            tokenIndex
-          }
-        ]
-      };
-    }
-
-    return {
-      isCorrect: true,
-      message: "V2 position is valid",
-      issues: []
-    };
-  };
 }
 
 export function createSentenceBuilder(mountNode, config = {}) {
@@ -320,7 +251,7 @@ export function createSentenceBuilder(mountNode, config = {}) {
       config
     });
 
-    const result = normalizeValidation(rawResult, labels.fail);
+    const result = normalizeSentenceValidationResult(rawResult, labels.fail);
 
     markIssues(result);
     updateFeedback(feedback, result.message, result.isCorrect ? "success" : "error");

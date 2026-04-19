@@ -1,4 +1,7 @@
 const DEFAULT_LOCALE = "nb-NO";
+const ZERO_WIDTH_CHARACTERS_REGEX = /[\u200B-\u200D\u2060\uFEFF]/g;
+const NON_STANDARD_SPACES_REGEX = /[\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]/g;
+const EDGE_PUNCTUATION_REGEX = /^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu;
 
 function safeNormalize(value, form) {
   try {
@@ -12,6 +15,8 @@ export function normalizeNorwegianText(value, options = {}) {
   const {
     form = "NFC",
     trim = true,
+    normalizeSpaces = true,
+    stripInvisible = true,
     collapseWhitespace = true,
     lowerCase = false,
     locale = DEFAULT_LOCALE
@@ -19,6 +24,14 @@ export function normalizeNorwegianText(value, options = {}) {
 
   let normalized = value == null ? "" : String(value);
   normalized = safeNormalize(normalized, form);
+
+  if (stripInvisible) {
+    normalized = normalized.replace(ZERO_WIDTH_CHARACTERS_REGEX, "");
+  }
+
+  if (normalizeSpaces) {
+    normalized = normalized.replace(NON_STANDARD_SPACES_REGEX, " ");
+  }
 
   if (collapseWhitespace) {
     normalized = normalized.replace(/\s+/g, " ");
@@ -30,6 +43,21 @@ export function normalizeNorwegianText(value, options = {}) {
 
   if (lowerCase) {
     normalized = normalized.toLocaleLowerCase(locale);
+  }
+
+  return normalized;
+}
+
+export function normalizeNorwegianToken(value, options = {}) {
+  const {
+    stripEdgePunctuation = false,
+    ...textOptions
+  } = options;
+
+  let normalized = normalizeNorwegianText(value, textOptions);
+
+  if (stripEdgePunctuation) {
+    normalized = normalized.replace(EDGE_PUNCTUATION_REGEX, "");
   }
 
   return normalized;
@@ -85,7 +113,7 @@ export function normalizeNorwegianWordList(words, options = {}) {
   }
 
   return words
-    .map((word) => normalizeNorwegianText(word, options))
+    .map((word) => normalizeNorwegianToken(word, options))
     .filter((word) => Boolean(word));
 }
 
@@ -119,7 +147,7 @@ export function findNorwegianTokenIndex(tokens, token, options = {}) {
     ...options
   });
 
-  const normalizedToken = normalizeNorwegianText(token, {
+  const normalizedToken = normalizeNorwegianToken(token, {
     lowerCase: true,
     ...options
   });

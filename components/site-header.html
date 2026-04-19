@@ -1,23 +1,24 @@
 <header class="sticky top-0 z-20 border-b border-white/70 bg-white/85 backdrop-blur">
-  <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-    <a data-component-home-link class="inline-flex items-center gap-2 text-sm font-semibold text-slate-900" href="index.html">
+  <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-3 py-2.5 sm:px-6 sm:py-3">
+    <a data-component-home-link data-i18n-aria-label="header.catalog" class="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-100" href="index.html">
       <i data-lucide="book-open" aria-hidden="true" class="h-4 w-4"></i>
-      <span data-i18n="header.catalog">Каталог тестов</span>
+      <span data-i18n="header.catalog" class="hidden sm:inline">Каталог тестов</span>
     </a>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
       <span data-i18n="header.brand" class="hidden text-xs font-medium text-slate-400 sm:inline">Norsk Learning</span>
 
       <div data-lang-switcher class="relative">
         <button
           type="button"
           data-lang-toggle
+          data-i18n-aria-label="header.language"
           aria-expanded="false"
-          class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/95 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-white hover:text-slate-900"
+          class="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-slate-200 bg-white/95 px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:gap-2 sm:px-3"
         >
           <i data-lucide="languages" aria-hidden="true" class="h-3.5 w-3.5"></i>
           <span data-i18n="header.language" class="hidden sm:inline">Язык</span>
-          <span data-lang-current class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold leading-none text-slate-700">RU</span>
+          <span data-lang-current class="hidden rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold leading-none text-slate-700 sm:inline-flex">RU</span>
           <i data-lucide="chevron-down" aria-hidden="true" class="h-3.5 w-3.5"></i>
         </button>
 

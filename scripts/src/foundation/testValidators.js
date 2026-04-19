@@ -1,8 +1,8 @@
 import {
   areNorwegianTextEqual,
-  normalizeNorwegianText,
   uniqueNorwegianValues
 } from "../core/lang/norwegianText.js";
+import { createOptionExplanationResolver } from "../core/engine/optionExplanationResolver.js";
 
 const SUPPORTED_MODES = new Set([
   "multiple-choice",
@@ -22,39 +22,6 @@ const MODE_OPTION_COUNT_REQUIRED = new Set([
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
-function createExplanationResolver(optionExplanations) {
-  if (!isPlainObject(optionExplanations)) {
-    return () => "";
-  }
-
-  const normalizedLookup = new Map();
-
-  for (const [key, value] of Object.entries(optionExplanations)) {
-    if (typeof value !== "string" || !value.trim()) {
-      continue;
-    }
-
-    const normalizedKey = normalizeNorwegianText(key, {
-      lowerCase: true
-    });
-
-    normalizedLookup.set(normalizedKey, value.trim());
-  }
-
-  return (optionValue) => {
-    const direct = optionExplanations?.[optionValue];
-    if (typeof direct === "string" && direct.trim()) {
-      return direct.trim();
-    }
-
-    const normalizedOption = normalizeNorwegianText(optionValue, {
-      lowerCase: true
-    });
-
-    return normalizedLookup.get(normalizedOption) || "";
-  };
 }
 
 export function validateTestConfig(testConfig) {
@@ -133,9 +100,7 @@ export function validateDataset(dataset, options = {}) {
     }
 
     if (Array.isArray(item?.options) && item.options.length > 0) {
-      const uniqueOptions = uniqueNorwegianValues(item.options, {
-        lowerCase: false
-      });
+      const uniqueOptions = uniqueNorwegianValues(item.options);
 
       if (uniqueOptions.length !== item.options.length) {
         errors.push(`Item #${index + 1} contains duplicate options when normalized for Norwegian text`);
@@ -153,7 +118,9 @@ export function validateDataset(dataset, options = {}) {
         continue;
       }
 
-      const resolveExplanation = createExplanationResolver(item.optionExplanations);
+      const resolveExplanation = createOptionExplanationResolver(item.optionExplanations, {
+        fallback: ""
+      });
 
       for (const option of uniqueOptions) {
         const explanation = resolveExplanation(option);

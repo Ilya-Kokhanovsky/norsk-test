@@ -17,20 +17,20 @@ import { buildResultMessage } from "../core/utils/text.js";
 const DEFAULT_OPTION_CLASS = [
   "btn-option w-full text-left px-4 py-3.5 rounded-xl",
   "border border-gray-200 bg-white",
-  "text-sm font-medium text-gray-700",
+  "min-h-[44px] break-words hyphens-auto text-sm font-medium text-gray-700",
   "hover:border-gray-400 hover:bg-gray-50"
 ].join(" ");
 
 const CORRECT_OPTION_CLASS = [
   "btn-option w-full text-left px-4 py-3.5 rounded-xl",
   "border border-emerald-300 bg-emerald-50",
-  "text-sm font-medium text-emerald-700"
+  "min-h-[44px] break-words hyphens-auto text-sm font-medium text-emerald-700"
 ].join(" ");
 
 const WRONG_OPTION_CLASS = [
   "btn-option w-full text-left px-4 py-3.5 rounded-xl",
   "border border-red-300 bg-red-50",
-  "text-sm font-medium text-red-600"
+  "min-h-[44px] break-words hyphens-auto text-sm font-medium text-red-600"
 ].join(" ");
 
 export function createQuizView(documentRef) {
@@ -217,11 +217,11 @@ export function createQuizView(documentRef) {
     for (const optionFeedback of result.optionFeedback) {
       const state = feedbackStateForOption(optionFeedback);
       const row = createNode(documentRef, "article", {
-        className: `rounded-xl border p-3 ${state.className}`
+        className: `min-w-0 rounded-xl border p-3 ${state.className}`
       });
 
       const rowWrap = createNode(documentRef, "div", {
-        className: "flex items-start gap-2.5"
+        className: "flex min-w-0 items-start gap-2.5"
       });
 
       const iconNode = createNode(documentRef, "i", {
@@ -232,15 +232,17 @@ export function createQuizView(documentRef) {
         }
       });
 
-      const textWrap = createNode(documentRef, "div");
+      const textWrap = createNode(documentRef, "div", {
+        className: "min-w-0 flex-1"
+      });
 
       const titleNode = createNode(documentRef, "p", {
-        className: "text-sm font-semibold text-slate-700",
+        className: "quiz-copy text-sm font-semibold text-slate-700",
         text: `${optionFeedback.label} · ${state.title}`
       });
 
       const explanationNode = createNode(documentRef, "p", {
-        className: "mt-1 text-xs leading-relaxed text-slate-500",
+        className: "quiz-copy mt-1 text-xs leading-relaxed text-slate-500",
         text: optionFeedback.explanation
       });
 
